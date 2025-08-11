@@ -1,4 +1,4 @@
-package com.training.expenseTracker.mapper;
+package com.training.expenseTracker.mapper.expenses;
 
 import com.training.expenseTracker.dto.expenses.ExpensesReadDTO;
 import com.training.expenseTracker.entity.Categories;
