@@ -10,17 +10,11 @@ import org.mapstruct.Mapping;
 public interface ExpensesReadMapper {
 
     @Mapping(source = "id", target = "expenseId")
-    @Mapping(source = "amount", target = "amount")
-    @Mapping(source = "description", target = "description")
-    @Mapping(source = "date", target = "date")
-    @Mapping(target = "expenseCategory", expression = "java(toCategoryDto(expense.getCategory()))")
+    @Mapping(source = "category", target = "expenseCategory")
     ExpensesReadDTO toDto(Expenses expense);
 
-    default ExpensesReadDTO.ExpenseCategory toCategoryDto(Categories category) {
-        return new ExpensesReadDTO.ExpenseCategory(
-                category.getId(),
-                category.getName(),
-                category.getColor()
-        );
-    }
+    @Mapping(source = "id",    target = "expenseCategoryId")
+    @Mapping(source = "name",  target = "expenseCategoryName")
+    @Mapping(source = "color", target = "expenseCategoryColor")
+    ExpensesReadDTO.ExpenseCategory toExpenseCategoryDto(Categories category);
 }
