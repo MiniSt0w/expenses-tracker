@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name="expenses")
@@ -14,7 +14,7 @@ public class Expenses {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String description;
-    private Date date;
+    private LocalDate date;
     private BigDecimal amount;
 
     @ManyToOne
