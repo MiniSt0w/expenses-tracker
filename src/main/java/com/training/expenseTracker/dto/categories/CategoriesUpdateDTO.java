@@ -1,10 +1,6 @@
 package com.training.expenseTracker.dto.categories;
 
-
-
-public record CategoriesCreateDTO(
+public record CategoriesUpdateDTO(
         String name,
-        String color) {
-
-}
-
+        String color
+) {}

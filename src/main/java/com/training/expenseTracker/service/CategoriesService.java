@@ -2,15 +2,16 @@ package com.training.expenseTracker.service;
 
 import com.training.expenseTracker.dto.categories.CategoriesCreateDTO;
 import com.training.expenseTracker.dto.categories.CategoriesReadDTO;
+import com.training.expenseTracker.dto.categories.CategoriesUpdateDTO;
 
 import java.util.List;
 
 public interface CategoriesService {
-    CategoriesReadDTO create(CategoriesCreateDTO dto);
-    CategoriesReadDTO update(Long id, CategoriesCreateDTO dto);
-    void delete(Long id);
-    CategoriesReadDTO getById(Long id);
+    CategoriesReadDTO create(CategoriesCreateDTO categoriesCreateDTO);
+    CategoriesReadDTO update(Integer id, CategoriesUpdateDTO categoriesUpdateDTO);
+    void delete(Integer id);
+    CategoriesReadDTO getById(Integer id);
     List<CategoriesReadDTO> findAll();
     boolean existsByName(String name);
-    void rename(Long id, String newName);
+    void rename(Integer id, String newName);
 }

@@ -8,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 public interface ExpensesService {
     ExpensesReadDTO create(ExpensesCreateDTO dto);
@@ -16,7 +15,10 @@ public interface ExpensesService {
     void delete(Long id);
     ExpensesReadDTO getById(Long id);
     Page<ExpensesReadDTO> search(
-                                                                   LocalDate from, LocalDate to, int categoryId, Pageable pageable
+                                                                   LocalDate from,
+                                                                   LocalDate to,
+                                                                   int categoryId,
+                                                                   Pageable pageable
     );
     BigDecimal total(LocalDate from, LocalDate to, int categoryId);
     List<ExpensesReadDTO> allExpenses();
