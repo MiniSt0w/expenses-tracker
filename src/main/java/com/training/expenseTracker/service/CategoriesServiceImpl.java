@@ -85,6 +85,9 @@ public class CategoriesServiceImpl implements CategoriesService{
     @Override
     public List<CategoriesReadDTO> findAll() {
         List<Categories> categories = categoriesRepository.findAll();
+        if(categories.isEmpty()){
+            throw new ApiException("No categories to display", HttpStatus.NOT_FOUND);
+        }
         return categories.stream()
                 .map(categoriesReadMapper::toDto)
                 .toList();

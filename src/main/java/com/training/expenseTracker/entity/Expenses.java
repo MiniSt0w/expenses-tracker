@@ -17,7 +17,7 @@ public class Expenses {
     private LocalDate date;
     private BigDecimal amount;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Categories category;
 
