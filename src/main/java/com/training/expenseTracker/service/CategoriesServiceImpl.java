@@ -9,7 +9,7 @@ import com.training.expenseTracker.mapper.categories.CategoriesCreateMapper;
 import com.training.expenseTracker.mapper.categories.CategoriesReadMapper;
 import com.training.expenseTracker.mapper.categories.CategoriesUpdateMapper;
 import com.training.expenseTracker.repository.CategoriesRepository;
-import jakarta.persistence.EntityNotFoundException;
+import com.training.expenseTracker.repository.ExpensesRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,12 +23,14 @@ public class CategoriesServiceImpl implements CategoriesService{
     private final CategoriesCreateMapper categoriesCreateMapper;
     private final CategoriesReadMapper categoriesReadMapper;
     private final CategoriesUpdateMapper categoriesUpdateMapper;
+    private final ExpensesRepository expensesRepository;
 
-    public CategoriesServiceImpl(CategoriesRepository categoriesRepository, CategoriesCreateMapper categoriesCreateMapper, CategoriesReadMapper categoriesReadMapper, CategoriesUpdateMapper categoriesUpdateMapper) {
+    public CategoriesServiceImpl(CategoriesRepository categoriesRepository, CategoriesCreateMapper categoriesCreateMapper, CategoriesReadMapper categoriesReadMapper, CategoriesUpdateMapper categoriesUpdateMapper, ExpensesRepository expensesRepository) {
         this.categoriesRepository = categoriesRepository;
         this.categoriesCreateMapper = categoriesCreateMapper;
         this.categoriesReadMapper = categoriesReadMapper;
         this.categoriesUpdateMapper = categoriesUpdateMapper;
+        this.expensesRepository = expensesRepository;
     }
 
     @Override
@@ -53,10 +55,19 @@ public class CategoriesServiceImpl implements CategoriesService{
     }
 
     @Override
+    @Transactional
     public void delete(Integer id) {
         Optional<Categories> categories=categoriesRepository.findById(id);
         if(categories.isEmpty()){
             throw new ApiException("Category not found", HttpStatus.NOT_FOUND);
+        }
+        boolean hasExpenses = expensesRepository.existsByCategory_Id(id);
+        if (hasExpenses) {
+            long count = expensesRepository.countByCategoryId(id);
+            throw new ApiException(
+                    "You can't delete this Category because it has " + count + " expenses / expense please delete this expenses or re-assign it",
+                    HttpStatus.CONFLICT
+            );
         }
         categoriesRepository.deleteById(id);
     }
@@ -76,25 +87,9 @@ public class CategoriesServiceImpl implements CategoriesService{
         List<Categories> categories = categoriesRepository.findAll();
         return categories.stream()
                 .map(categoriesReadMapper::toDto)
-                .toList(); // Java 16+
+                .toList();
     }
 
-    @Override
-    public boolean existsByName(String name) {
-        return categoriesRepository.existsByName(name);
-    }
-
-    @Override
-    public void rename(Integer id, String newName) {
-        Optional<Categories> categories=categoriesRepository.findById(id);
-        if(categories.isEmpty()){
-            throw new ApiException("Category not found", HttpStatus.NOT_FOUND);
-        }
-        Categories category=categories.get();
-        category.setName(newName);
-        categoriesRepository.save(category);
-
-    }
 
 
 }

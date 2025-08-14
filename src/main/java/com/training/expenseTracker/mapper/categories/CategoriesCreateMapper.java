@@ -7,8 +7,6 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface CategoriesCreateMapper {
-    @Mapping(source = "categoryName" ,target = "name")
-    @Mapping(source = "categoryColor" ,target = "color")
     @Mapping(target = "id", ignore = true)
     Categories toEntity(CategoriesCreateDTO categoriesCreateDTO);
 }

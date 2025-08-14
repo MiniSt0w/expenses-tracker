@@ -12,6 +12,4 @@ public interface CategoriesService {
     void delete(Integer id);
     CategoriesReadDTO getById(Integer id);
     List<CategoriesReadDTO> findAll();
-    boolean existsByName(String name);
-    void rename(Integer id, String newName);
 }
